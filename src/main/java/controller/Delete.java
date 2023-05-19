@@ -44,7 +44,10 @@ public class Delete extends HttpServlet {
 		
 		}
 		out.close();
-		baseUtil.dbClose();
+//		baseUtil.dbClose();
+		ServletContext scd=request.getServletContext();
+		DataBaseUtil baseUtil1= (DataBaseUtil) scd.getAttribute("closeConnection");
+		baseUtil1.dbClose();
 
 		
 		

@@ -11,23 +11,21 @@ public class DataBaseUtil {
 	
 	Connection connection=null;
 
-
-	public  Connection getConnector() {
+	static DataSource ds;
+	public  static DataSource dataSource() {
 		
-		try {
-			
+		try {			
 			Context initContext = new InitialContext();
-			DataSource ds=(DataSource) initContext.lookup("java:comp/env/jdbc/employee");
-			connection=ds.getConnection();
-			return connection;
+			ds=(DataSource) initContext.lookup("java:comp/env/jdbc/employee");
+
 		}catch (Exception e) {
 			System.out.println("data base error");
 			System.out.println(e);
 		}
+		return ds;
 		
-		return connection;
 	}
-	
+		
 	public void dbClose() {
 		try {
 			connection.close();
@@ -35,6 +33,15 @@ public class DataBaseUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public Connection getConnector() {
+		try {
+			connection=dataSource().getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error in databaseutil");
+		}
+		return connection;
 	}
 
 }

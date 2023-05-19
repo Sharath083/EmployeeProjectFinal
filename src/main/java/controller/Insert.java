@@ -46,8 +46,12 @@ public class Insert extends HttpServlet {
 			out.println("Enter new ID");
 
 		}
-		baseUtil.dbClose();
+//		baseUtil.dbClose();
 		out.close();
+		ServletContext scd=request.getServletContext();
+		DataBaseUtil baseUtil1= (DataBaseUtil) scd.getAttribute("closeConnection");
+		baseUtil1.dbClose();
+
 				
 	}
 }

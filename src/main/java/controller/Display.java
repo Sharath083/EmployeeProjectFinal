@@ -56,7 +56,10 @@ public class Display extends HttpServlet {
 			out.close();
 
 		}
-		baseUtil.dbClose();
+//		baseUtil.dbClose();
+		ServletContext scd=request.getServletContext();
+		DataBaseUtil baseUtil1= (DataBaseUtil) scd.getAttribute("closeConnection");
+		baseUtil1.dbClose();
 
 
 	}
@@ -66,54 +69,3 @@ public class Display extends HttpServlet {
 
 
 
-//package controller;
-//
-//import java.io.IOException;
-//import java.io.PrintWriter;
-//import java.util.Hashtable;
-//
-//import javax.servlet.ServletException;
-//import javax.servlet.http.HttpServlet;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//
-//import com.employee.methods.AllEmployeeDao;
-//import com.google.gson.Gson;
-//import com.employee.methods.Employee;
-//
-//public class Display extends HttpServlet {
-//	private static final long serialVersionUID = 1L;
-//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		// TODO Auto-generated method stub
-//		AllEmployeeDao dao = new AllEmployeeDao();
-//		Gson gson = new Gson();
-//		
-//		Employee emp = gson.fromJson(request.getReader(), Employee.class);
-//
-//		Hashtable<Integer,Employee> e = dao.displayJason1(emp.getEmployeeId());
-//		String s = gson.toJson(e);
-//		
-////		List<Employee> e = dao.displayEmp(id);
-////		String s = gson.toJson(e);
-//		PrintWriter out = response.getWriter();
-//
-//		if(!e.isEmpty()) {
-//			try {
-//				response.setContentType("application/JSON");
-//				response.setCharacterEncoding("UTF-8");
-//				out.println(s);
-//			}
-//			finally {
-//				out.close();
-//			}
-//		}
-//		else {
-//			out.println("The employe with "+emp.getEmployeeId()+" is not present");
-//			out.close();
-//
-//		}
-//
-//	}
-//
-//
-//}

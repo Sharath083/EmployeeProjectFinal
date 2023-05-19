@@ -1,4 +1,5 @@
 package Dao;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,12 +27,26 @@ public class AllEmployeeDao {
 	static Logger log = Logger.getLogger("Connector");
     static FileHandler fh; 
     
+    
+    public void logMethod() {
+		try {
+			fh = new FileHandler("D:\\logging.txt");
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+        log.addHandler(fh);
+        SimpleFormatter formatter = new SimpleFormatter();  
+        fh.setFormatter(formatter);
+
+    }
+    
 	public void createDetails(Employee e,Connection dbConnection)   {
 		PreparedStatement pstmt=null;
 
-		if(dbConnection==null) {
-			System.out.println("bdewv");
-		}
 		try {
 			pstmt = dbConnection.prepareStatement(insertQuery);
 		    pstmt.setInt(1, e.getEmployeeId());
@@ -39,13 +54,11 @@ public class AllEmployeeDao {
 		    pstmt.setString(3, e.getEmployeeName());
 		    pstmt.setString(4, e.getEmployeeType());
 		    pstmt.execute();		    
-		    subTables(e.getEmployeeType(), e.getEmployeeId(),dbConnection);		    
-			fh = new FileHandler("D:\\logging.txt");  
-	        log.addHandler(fh);
-	        SimpleFormatter formatter = new SimpleFormatter();  
-	        fh.setFormatter(formatter);
+		    subTables(e.getEmployeeType(), e.getEmployeeId(),dbConnection);	
+		    logMethod();
 		    log.info("Details of ID "+e.getEmployeeId()+" are added to database");
 		}catch (Exception e1) {
+			logMethod();
 			log.info("This Employee with ID "+e.getEmployeeId()+ " Already Exist in DataBase");
 			System.out.println("Enter New ID");
 		}
@@ -91,8 +104,8 @@ public class AllEmployeeDao {
 					
 					
 					
-				
-				System.out.println("Details of "+e.getEmployeeId()+" are updated in database");
+				logMethod();
+				log.info("Details of "+e.getEmployeeId()+" are updated in database");
 			} 
 			catch (Exception e2) {
 				System.out.println("in Exception e2");
@@ -107,10 +120,7 @@ public class AllEmployeeDao {
 			}
 		}
 			else {
-		        log.addHandler(fh);
-		        SimpleFormatter formatter = new SimpleFormatter();  
-		        fh.setFormatter(formatter);
-
+				logMethod();
 				log.info("The id "+e.getEmployeeId()+" you have entered doesnot Exist to update");
 			}
 		} catch (SQLException e1) {
@@ -122,7 +132,6 @@ public class AllEmployeeDao {
 	
 	public void subTables(String type,int id,Connection dbConnection)  {
 
-		System.out.println("in sub");
 		try {
 			if(type.equals("parttime")) {
 
@@ -204,8 +213,7 @@ public class AllEmployeeDao {
 
 	}
 	
-	public void deleteDetails(int id,Connection connection)  {
-		Connection dbConnection=connection;
+	public void deleteDetails(int id,Connection dbConnection)  {
 
 		try {
 			System.out.println("in try 1");
@@ -224,10 +232,12 @@ public class AllEmployeeDao {
 					s=resultSet.getString("employeeType");
 					System.out.println("got "+s);
 					pstmtDel.execute();
-					delete(s, id, dbConnection);	
-					System.out.println("The id "+id+"  in Database are delete");
+					delete(s, id, dbConnection);
+					logMethod();
+					log.info("The id "+id+"  in Database are delete");
 				}
 				else {
+					logMethod();
 					log.info("The id "+id+" doesnot exists in Database to delete");
 				}				
 			}finally {
@@ -336,7 +346,7 @@ public class AllEmployeeDao {
 			e.printStackTrace();
 		}finally {
 			try {
-//				ps.close();
+				ps.close();
 				rs.close();
 
 			} catch (SQLException e) {
