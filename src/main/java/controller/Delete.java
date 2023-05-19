@@ -35,8 +35,7 @@ public class Delete extends HttpServlet {
 		if(dao.present(emp.getEmployeeId(), connection)) {
 			dao.deleteDetails(emp.getEmployeeId(), connection);
 			out.println("Details of ID "+emp.getEmployeeId()+" are deleted");
-			DisplayAll d=new DisplayAll();
-			d.doPost(request, response);
+
 
 		}
 		else {

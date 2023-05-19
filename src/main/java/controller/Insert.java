@@ -36,7 +36,6 @@ public class Insert extends HttpServlet {
 		if(!(dao.present(emp.getEmployeeId(), connection))) {
 			dao.createDetails(emp, connection);
 			String s = gson.toJson(dao.displayJason1(emp.getEmployeeId(), connection));
-//			dao.addToSubTables();
 			response.setContentType("application/json");
 			out.println("Details of ID "+emp.getEmployeeId()+" are created");
 			out.print(s);
@@ -46,7 +45,6 @@ public class Insert extends HttpServlet {
 			out.println("Enter new ID");
 
 		}
-//		baseUtil.dbClose();
 		out.close();
 		ServletContext scd=request.getServletContext();
 		DataBaseUtil baseUtil1= (DataBaseUtil) scd.getAttribute("closeConnection");

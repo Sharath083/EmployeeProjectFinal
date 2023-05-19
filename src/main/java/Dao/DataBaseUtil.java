@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 
 public class DataBaseUtil {
 	
-	Connection connection=null;
+	static Connection connection;
 
 	static DataSource ds;
 	public  static DataSource dataSource() {
@@ -26,7 +26,7 @@ public class DataBaseUtil {
 		
 	}
 		
-	public void dbClose() {
+	public static void dbClose() {
 		try {
 			connection.close();
 		} catch (SQLException e) {
